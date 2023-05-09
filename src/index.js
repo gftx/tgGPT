@@ -22,13 +22,12 @@ bot.command('new', async (ctx) => {
 })
 
 bot.on(message('text'), async ctx => {
-    console.log('ff')
     if (!ctx.session) ctx.session = INIT_SESSION
     try {
         const text = ctx.message.text;
-        await ctx.reply(`ваш запрос: \"${text}\"`);
 
         ctx.session.messages.push({ role: openai.roles.USER, content: text });
+        await ctx.reply(code('*пык мык* обрабатываем ваше сообщение *пык мык*'));
         
         const gptAnswer = await openai.chat(ctx.session.messages);
 
@@ -42,7 +41,6 @@ bot.on(message('text'), async ctx => {
 
 
 bot.on(message('voice'), async ctx => {
-    console.log('fff')
     if (!ctx.session) ctx.session = INIT_SESSION
     try {
         const userId = String(ctx.message.from.id);
@@ -53,7 +51,7 @@ bot.on(message('voice'), async ctx => {
         const mp3Path = await ogg.toMp3(oggPath, userId);
 
         const text = await openai.transcription(mp3Path);
-        await ctx.reply(`ваш запрос: \"${text}\"`);
+        await ctx.reply(`обрабатываем ваш запрос: \"${text}\"`);
 
         ctx.session.messages.push({ role: openai.roles.USER, content: text });
 
